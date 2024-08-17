@@ -9,7 +9,7 @@ script = ExtResource("1_hq07i")
 testPlaceableItem = ExtResource("2_05a0s")
 
 [node name="BaseGrid" parent="." instance=ExtResource("1_xekyy")]
-position = Vector2(249, 38)
+position = Vector2(251, 38)
 gridColumnsCount = 8
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
