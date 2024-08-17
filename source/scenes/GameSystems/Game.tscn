@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://6jsylcsnrfd3"]
+
+[ext_resource type="Script" path="res://scenes/GameSystems/game.gd" id="1_hq07i"]
+[ext_resource type="PackedScene" uid="uid://bh2ag2wclw6d3" path="res://scenes/GameSystems/Grid/baseGrid.tscn" id="1_xekyy"]
+[ext_resource type="Resource" uid="uid://dm06nnyg7btjb" path="res://scenes/GameItems/tower/tower.tres" id="2_05a0s"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_hq07i")
+testPlaceableItem = ExtResource("2_05a0s")
+
+[node name="BaseGrid" parent="." instance=ExtResource("1_xekyy")]
+position = Vector2(249, 38)
+gridColumnsCount = 8
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_left = 1628.0
+offset_top = 829.0
+offset_right = 1708.0
+offset_bottom = 909.0
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "Place tower"
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_towerTest_button_pressed"]

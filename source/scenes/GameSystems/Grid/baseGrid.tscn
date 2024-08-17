@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh2ag2wclw6d3"]
+
+[ext_resource type="Script" path="res://scenes/GameSystems/Grid/base_grid.gd" id="1_rrv2i"]
+[ext_resource type="PackedScene" uid="uid://l1x7x8dkx8kx" path="res://scenes/GameSystems/Grid/gridCell.tscn" id="2_cfgrf"]
+
+[node name="BaseGrid" type="Node2D"]
+script = ExtResource("1_rrv2i")
+gridSquare = ExtResource("2_cfgrf")
