@@ -22,7 +22,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print("mouse grid pos: ", cellMouseOn)
+	# print("mouse grid pos: ", cellMouseOn)
 	# Display item in hand
 	if itemInHand:
 		itemInHandSprite.position = get_local_mouse_position()
