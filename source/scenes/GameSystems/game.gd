@@ -5,7 +5,7 @@ var currentPlacingItem : placeableItem
 
 var itemInHand : bool = false
 
-var itemInHandSprite : Sprite2D 
+var itemInHandSprite : TextureRect 
 
 var mouseOnCell : bool
 var cellMouseOn : Vector2
@@ -15,8 +15,8 @@ var cellMouseOn : Vector2
 func _ready() -> void:
 	GlobalNodes.gameNode = self
 
-	itemInHandSprite = Sprite2D.new()
-	add_child(itemInHandSprite)
+	itemInHandSprite = TextureRect.new()
+	$UI.add_child(itemInHandSprite)
 	pass # Replace with function body.
 
 
@@ -25,7 +25,8 @@ func _process(delta: float) -> void:
 	# print("mouse grid pos: ", cellMouseOn)
 	# Display item in hand
 	if itemInHand:
-		itemInHandSprite.position = get_local_mouse_position()
+		itemInHandSprite.position = get_viewport().get_mouse_position()
+
 	
 	if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && mouseOnCell && itemInHand:
 		var tempItemNode : GameItem = currentPlacingItem.scene.instantiate()
