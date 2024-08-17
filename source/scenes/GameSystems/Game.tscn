@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bh2ag2wclw6d3" path="res://scenes/GameSystems/Grid/baseGrid.tscn" id="1_xekyy"]
 [ext_resource type="Resource" uid="uid://dm06nnyg7btjb" path="res://scenes/GameItems/tower/tower.tres" id="2_05a0s"]
 [ext_resource type="PackedScene" uid="uid://cawt67enk7m2q" path="res://scenes/GameSystems/main_camera.tscn" id="3_gbh75"]
-[ext_resource type="PackedScene" uid="uid://bgvrr1ylte144" path="res://scenes/GameItems/ship/Ship.tscn" id="5_pdfhr"]
+[ext_resource type="Resource" uid="uid://dnjuk0rta3l5f" path="res://scenes/GameItems/ship/MainShip.tres" id="5_grmce"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_hq07i")
@@ -14,7 +14,7 @@ testPlaceableItem = ExtResource("2_05a0s")
 
 [node name="BaseGrid" parent="." instance=ExtResource("1_xekyy")]
 position = Vector2(251, 38)
-shipGameItem = ExtResource("5_pdfhr")
+shipPlaceableItem = ExtResource("5_grmce")
 gridRowsCount = 11
 gridColumnsCount = 11
 shipRow = 5
