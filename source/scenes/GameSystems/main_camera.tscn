@@ -5,3 +5,4 @@
 [node name="MainCamera" type="Camera2D"]
 position = Vector2(965, 539)
 script = ExtResource("1_s52u7")
+zoomSpeed = 0.1
