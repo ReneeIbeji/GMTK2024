@@ -20,7 +20,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(get_local_mouse_position())
 	if cameraDragging && Input.is_action_pressed("ACTION_DragCamera") && mouseInWindow:
 		lastMousePosition = currentMousePosition
 		currentMousePosition = get_local_mouse_position()
@@ -34,11 +33,6 @@ func _process(delta: float) -> void:
 		cameraDragging = true
 		currentMousePosition = get_local_mouse_position()
 
-	print(Input.get_axis("CAMERA_ZoomIn","CAMERA_ZoomOut"))
-	if Input.is_action_pressed("CAMERA_ZoomIn"):
-		print("zoom in")
-	if Input.is_action_pressed("CAMERA_ZoomOut"):
-		zoom -= Vector2(1,1) * zoomSpeed * delta
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

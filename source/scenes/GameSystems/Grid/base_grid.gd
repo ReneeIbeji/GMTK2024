@@ -44,11 +44,16 @@ func _ready() -> void:
 	
 
 
-func place_item_on_grid(row : int, column : int , item : placeableItem) -> void:
-	var tempItemNode : GameItem = item.scene.instantiate()
+func place_item_on_grid(row : int, column : int , item : placeableItem) -> bool:
+	if gridCellsContents[row][column] != null:
+		return false
+
+	var tempItemNode : GameItem = item.scene.instantiate() as GameItem
 	tempItemNode.position = get_cell_position(row,column)
 	add_child(tempItemNode)
-	gridCellsContents[row][column] = item
+	gridCellsContents[row][column] = tempItemNode
+
+	return true
 
 func get_item_on_grid(row : int, column : int) -> GameItem:
 	return gridCellsContents[row][column]
