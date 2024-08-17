@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://l1x7x8dkx8kx"]
+
+[ext_resource type="Script" path="res://scenes/GameSystems/Grid/grid_cell.gd" id="1_2jjh2"]
+
+[sub_resource type="Gradient" id="Gradient_dcpqq"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jcbhg"]
+gradient = SubResource("Gradient_dcpqq")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i1nfc"]
+size = Vector2(100, 100)
+
+[node name="GridCell" type="Area2D" groups=["gridCell"]]
+script = ExtResource("1_2jjh2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.985, 1.985)
+texture = SubResource("GradientTexture2D_jcbhg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i1nfc")
