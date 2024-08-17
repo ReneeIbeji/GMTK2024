@@ -29,7 +29,18 @@ func _ready() -> void:
 			tempSquare.mouse_off_cell.connect(mouse_exits_current_cell)
 			add_child(tempSquare)
 			tempRow.append(tempSquare)
+
 		gridCells.append(tempRow)
+
+		var tempArray : Array[GameItem] = []
+		tempArray.resize(gridColumnsCount)
+		gridCellsContents.append(tempArray)
+
+func place_item_on_grid(row : int, column : int , item : GameItem) -> void:
+	gridCellsContents[row][column] = item
+
+func get_item_on_grid(row : int, column : int) -> GameItem:
+	return gridCellsContents[row][column]
 
 func get_cell_position(row : int, column : int) -> Vector2:
 	return gridCells[row][column].position

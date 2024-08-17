@@ -31,6 +31,7 @@ func _process(delta: float) -> void:
 		var tempItemNode : GameItem = currentPlacingItem.scene.instantiate()
 		tempItemNode.position = GlobalNodes.baseGridNode.get_cell_position(cellMouseOn.x, cellMouseOn.y)
 		GlobalNodes.baseGridNode.add_child(tempItemNode)
+		GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, tempItemNode)
 		clear_placing_item()
 
 
