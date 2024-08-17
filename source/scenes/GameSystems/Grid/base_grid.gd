@@ -2,9 +2,13 @@ class_name BaseGrid
 extends Node2D
 
 @export var gridSquare : PackedScene
+@export var shipGameItem : PackedScene
 
 @export var gridRowsCount : int = 10
 @export var gridColumnsCount : int = 10
+
+@export var shipRow : int
+@export var shipColumn : int
 
 
 var gridCells : Array[Array]
@@ -35,6 +39,13 @@ func _ready() -> void:
 		var tempArray : Array[GameItem] = []
 		tempArray.resize(gridColumnsCount)
 		gridCellsContents.append(tempArray)
+
+	var tempShipNode : GameItem = shipGameItem.instantiate()
+	tempShipNode.position = get_cell_position(shipRow,shipColumn)
+	add_child(tempShipNode)
+	place_item_on_grid(shipColumn,shipRow,tempShipNode)	
+	
+
 
 func place_item_on_grid(row : int, column : int , item : GameItem) -> void:
 	gridCellsContents[row][column] = item
