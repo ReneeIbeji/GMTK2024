@@ -1,10 +1,13 @@
 class_name GameItem
 extends StaticBody2D
 
+var gridRow : int
+var gridColumn : int
 @export var maxHealth : int
 @export var health : int
 @export var attackCooldown : int
-@export var attackStrenth : int
+@export var attackStrength : int
+@export var attackDistance : int
 
 signal gameItemDestroyed()
 
@@ -16,7 +19,7 @@ func attack(healthDelta : int ) -> void:
 
 
 func destroyed() -> void:
-    gameItemDestroyed.emit()
+    gameItemDestroyed.emit(gridRow,gridColumn)
     queue_free()
 
     

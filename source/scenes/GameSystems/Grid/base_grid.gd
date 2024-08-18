@@ -52,10 +52,19 @@ func place_item_on_grid(row : int, column : int , item : placeableItem) -> bool:
 
 	var tempItemNode : GameItem = item.scene.instantiate() as GameItem
 	tempItemNode.position = get_cell_position(row,column)
+
+	tempItemNode.gridRow = row
+	tempItemNode.gridColumn = column
+
 	add_child(tempItemNode)
 	gridCellsContents[row][column] = tempItemNode
 
+	tempItemNode.gameItemDestroyed.connect(remove_item_from_grid)
+
 	return true
+
+func remove_item_from_grid(row : int, column : int) -> void:
+	gridCellsContents[row][column] = null
 
 func get_item_on_grid(row : int, column : int) -> GameItem:
 	return gridCellsContents[row][column]
