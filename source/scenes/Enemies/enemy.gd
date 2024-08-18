@@ -22,7 +22,8 @@ func _process(delta: float) -> void:
 			gameItemToAttack.attack(attackStrength)
 			timeLeftToAttack = timeToAttack
 
-func continueMoving() -> void:
+func continueMoving(row : int, column : int) -> void:
+	print("continue moving")
 	if gameItemToAttackQueue.is_empty():
 		stopped = false
 		gameItemToAttack = null

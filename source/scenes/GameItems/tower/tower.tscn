@@ -1,14 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://bx8rjpxu7xdwv"]
+[gd_scene load_steps=5 format=3 uid="uid://bx8rjpxu7xdwv"]
 
 [ext_resource type="Script" path="res://scenes/GameItems/tower/tower.gd" id="1_3hf3b"]
 [ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="1_u7ypk"]
+[ext_resource type="PackedScene" uid="uid://buuaupvq0is7h" path="res://scenes/GameItems/tower/towerProjectile.tscn" id="2_qrbf4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3u07l"]
 size = Vector2(129, 131)
 
 [node name="Tower" type="StaticBody2D" groups=["tower"]]
 script = ExtResource("1_3hf3b")
+attackTime = 5.0
+projectileScene = ExtResource("2_qrbf4")
 maxHealth = 3
+attackCooldown = 2
+attackStrength = 2
+attackDistance = 500
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.477675, 0.405349, 0.279738, 1)

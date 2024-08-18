@@ -45,11 +45,14 @@ func spawn_enemy() -> void:
 	tempEnemyNode.position = enemySpawnPoint
 	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
 	tempEnemyNode.health = tempEnemyNode.maxHealth
+	tempEnemyNode.enemyDied.connect(remove_enemy)
 
 	add_child(tempEnemyNode)
 	enemysInPlay.append(tempEnemyNode)
 
 
+func remove_enemy(enemy : Enemy) -> void:
+	enemysInPlay.erase(enemy)
 
 
 func set_placing_item(item : placeableItem) -> void:
