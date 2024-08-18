@@ -44,6 +44,7 @@ func spawn_enemy() -> void:
 	var tempEnemyNode : Enemy = EnemyScene.instantiate()
 	tempEnemyNode.position = enemySpawnPoint
 	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
+	tempEnemyNode.health = tempEnemyNode.maxHealth
 
 	add_child(tempEnemyNode)
 	enemysInPlay.append(tempEnemyNode)
