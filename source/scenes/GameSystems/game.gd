@@ -1,11 +1,15 @@
 class_name Game
 extends Node2D
 
+@export var EnemyScene : PackedScene
+ 
 var currentPlacingItem : placeableItem
 
 var itemInHand : bool = false
 
 var itemInHandSprite : TextureRect 
+
+var enemysInPlay : Array[Enemy]
 
 var mouseOnCell : bool
 var cellMouseOn : Vector2
@@ -17,7 +21,7 @@ func _ready() -> void:
 
 	itemInHandSprite = TextureRect.new()
 	$UI.add_child(itemInHandSprite)
-	pass # Replace with function body.
+	spawn_enemy()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,11 +33,21 @@ func _process(delta: float) -> void:
 
 	
 	if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && mouseOnCell && itemInHand:
-		var tempItemNode : GameItem = currentPlacingItem.scene.instantiate()
-		tempItemNode.position = GlobalNodes.baseGridNode.get_cell_position(cellMouseOn.x, cellMouseOn.y)
-		GlobalNodes.baseGridNode.add_child(tempItemNode)
-		GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, tempItemNode)
+		var result : bool = GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, currentPlacingItem)
 		clear_placing_item()
+
+
+func spawn_enemy() -> void:
+	$EnemySpawnPoints/SpawnPoint.progress_ratio = randf()
+	var enemySpawnPoint : Vector2 = $EnemySpawnPoints/SpawnPoint.position
+
+	var tempEnemyNode : Enemy = EnemyScene.instantiate()
+	tempEnemyNode.position = enemySpawnPoint
+	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
+	tempEnemyNode.health = tempEnemyNode.maxHealth
+
+	add_child(tempEnemyNode)
+	enemysInPlay.append(tempEnemyNode)
 
 
 

@@ -1,19 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://6jsylcsnrfd3"]
+[gd_scene load_steps=8 format=3 uid="uid://6jsylcsnrfd3"]
 
 [ext_resource type="Script" path="res://scenes/GameSystems/game.gd" id="1_hq07i"]
 [ext_resource type="PackedScene" uid="uid://bh2ag2wclw6d3" path="res://scenes/GameSystems/Grid/baseGrid.tscn" id="1_xekyy"]
 [ext_resource type="Resource" uid="uid://dm06nnyg7btjb" path="res://scenes/GameItems/tower/tower.tres" id="2_05a0s"]
+[ext_resource type="PackedScene" uid="uid://b7kexp01iv2h7" path="res://scenes/Enemies/Enemy.tscn" id="2_e1iwy"]
 [ext_resource type="PackedScene" uid="uid://cawt67enk7m2q" path="res://scenes/GameSystems/main_camera.tscn" id="3_gbh75"]
+[ext_resource type="Resource" uid="uid://dnjuk0rta3l5f" path="res://scenes/GameItems/ship/MainShip.tres" id="5_grmce"]
+
+[sub_resource type="Curve2D" id="Curve2D_fhnao"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 981, -1208, 0, 0, 0, 0, 1165, -1075, 0, 0, 0, 0, 2114, -506, 0, 0, 0, 0, 2533, 503, 0, 0, 0, 0, 2694, 1944, 0, 0, 0, 0, 749, 2229, 0, 0, 0, 0, -707, 1259, 0, 0, 0, 0, -452, -475, 0, 0, 0, 0, 365, -995, 0, 0, 0, 0, 765, -1139, 0, 0, 0, 0, 981, -1208)
+}
+point_count = 11
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_hq07i")
+EnemyScene = ExtResource("2_e1iwy")
 testPlaceableItem = ExtResource("2_05a0s")
 
 [node name="MainCamera" parent="." instance=ExtResource("3_gbh75")]
 
 [node name="BaseGrid" parent="." instance=ExtResource("1_xekyy")]
 position = Vector2(251, 38)
-gridColumnsCount = 8
+shipPlaceableItem = ExtResource("5_grmce")
+gridRowsCount = 11
+gridColumnsCount = 11
+shipRow = 5
+shipColumn = 5
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -25,5 +38,12 @@ offset_bottom = 909.0
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = "Place tower"
+
+[node name="EnemySpawnPoints" type="Path2D" parent="."]
+curve = SubResource("Curve2D_fhnao")
+
+[node name="SpawnPoint" type="PathFollow2D" parent="EnemySpawnPoints"]
+position = Vector2(981, -1208)
+rotation = 0.625882
 
 [connection signal="pressed" from="UI/Button" to="." method="_on_towerTest_button_pressed"]

@@ -2,11 +2,16 @@ class_name BaseGrid
 extends Node2D
 
 @export var gridSquare : PackedScene
+@export var shipPlaceableItem : placeableItem
 
 @export var gridRowsCount : int = 10
 @export var gridColumnsCount : int = 10
 
+@export var shipRow : int
+@export var shipColumn : int
 
+
+var mainShipNode : GameItem
 var gridCells : Array[Array]
 var gridCellsContents : Array[Array]
 
@@ -36,8 +41,21 @@ func _ready() -> void:
 		tempArray.resize(gridColumnsCount)
 		gridCellsContents.append(tempArray)
 
-func place_item_on_grid(row : int, column : int , item : GameItem) -> void:
-	gridCellsContents[row][column] = item
+	place_item_on_grid(shipColumn,shipRow,shipPlaceableItem)		
+	mainShipNode = get_item_on_grid(shipColumn,shipRow)
+	
+
+
+func place_item_on_grid(row : int, column : int , item : placeableItem) -> bool:
+	if gridCellsContents[row][column] != null:
+		return false
+
+	var tempItemNode : GameItem = item.scene.instantiate() as GameItem
+	tempItemNode.position = get_cell_position(row,column)
+	add_child(tempItemNode)
+	gridCellsContents[row][column] = tempItemNode
+
+	return true
 
 func get_item_on_grid(row : int, column : int) -> GameItem:
 	return gridCellsContents[row][column]
