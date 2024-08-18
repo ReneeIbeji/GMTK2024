@@ -9,6 +9,8 @@ var itemInHand : bool = false
 
 var itemInHandSprite : TextureRect 
 
+var enemysInPlay : Array[Enemy]
+
 var mouseOnCell : bool
 var cellMouseOn : Vector2
 
@@ -44,6 +46,7 @@ func spawn_enemy() -> void:
 	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
 
 	add_child(tempEnemyNode)
+	enemysInPlay.append(tempEnemyNode)
 
 
 
