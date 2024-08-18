@@ -11,6 +11,7 @@ extends Node2D
 @export var shipColumn : int
 
 
+var mainShipNode : GameItem
 var gridCells : Array[Array]
 var gridCellsContents : Array[Array]
 
@@ -40,7 +41,8 @@ func _ready() -> void:
 		tempArray.resize(gridColumnsCount)
 		gridCellsContents.append(tempArray)
 
-	place_item_on_grid(shipColumn,shipRow,shipPlaceableItem)	
+	place_item_on_grid(shipColumn,shipRow,shipPlaceableItem)		
+	mainShipNode = get_item_on_grid(shipColumn,shipRow)
 	
 
 

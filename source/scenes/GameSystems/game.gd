@@ -1,6 +1,8 @@
 class_name Game
 extends Node2D
 
+@export var EnemyScene : PackedScene
+ 
 var currentPlacingItem : placeableItem
 
 var itemInHand : bool = false
@@ -17,7 +19,7 @@ func _ready() -> void:
 
 	itemInHandSprite = TextureRect.new()
 	$UI.add_child(itemInHandSprite)
-	pass # Replace with function body.
+	spawn_enemy()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,8 +32,18 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && mouseOnCell && itemInHand:
 		var result : bool = GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, currentPlacingItem)
-		print(result)
 		clear_placing_item()
+
+
+func spawn_enemy() -> void:
+	$EnemySpawnPoints/SpawnPoint.progress_ratio = randf()
+	var enemySpawnPoint : Vector2 = $EnemySpawnPoints/SpawnPoint.position
+
+	var tempEnemyNode : Enemy = EnemyScene.instantiate()
+	tempEnemyNode.position = enemySpawnPoint
+	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
+
+	add_child(tempEnemyNode)
 
 
 
