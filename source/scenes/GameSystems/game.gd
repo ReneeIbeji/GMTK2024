@@ -6,6 +6,10 @@ enum mouseState {None, Item, PowerUp}
 @export var EnemyScene : PackedScene
 @export var upgradeMouseIcon : CompressedTexture2D
 
+var pointCount : int
+
+@export var numberOfSecondsPerPoint : int 
+
 var currentHandState : mouseState
  
 var currentPlacingItem : placeableItem
@@ -21,7 +25,10 @@ var cellMouseOn : Vector2
 @export var testPlaceableItem : placeableItem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	pointCount = 10
 	currentHandState = mouseState.None
+
+	get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)
 
 	GlobalNodes.gameNode = self
 
@@ -34,6 +41,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# print("mouse grid pos: ", cellMouseOn)
 	# Display item in hand
+	$UI/Points.text = "Points: " + str(pointCount)
+
 	if currentHandState != mouseState.None:
 		itemInHandSprite.position = get_viewport().get_mouse_position() + Vector2(20,20)
 
@@ -85,8 +94,7 @@ func deSet_mouse_upgrade() -> void:
 	itemInHandSprite.texture = null
 
 
-func _on_towerTest_button_pressed() -> void:
-	set_placing_item(testPlaceableItem)
+
 
 func mouse_enter_grid_cell(row : int , column : int) -> void:
 	mouseOnCell =  true
@@ -98,11 +106,25 @@ func mouse_exits_grid_cell(row : int, column : int) -> void:
 			mouseOnCell = false
 			cellMouseOn = Vector2(-1,-1)
 
+func _on_towerTest_button_pressed() -> void:
+	if pointCount < 10:
+		return
+	
+	set_placing_item(testPlaceableItem)
+	pointCount -= 10
 
 func _on_upgradeTest_button_test() -> void:
-	print("pressss")
+
 	if currentHandState == mouseState.None:
+		if pointCount < 6:
+			return
 		set_mouse_upgrade()
+		pointCount -= 6
 		return
 	elif currentHandState == mouseState.PowerUp:
+		pointCount += 6
 		deSet_mouse_upgrade()
+
+func accumulatePoints() -> void:
+	pointCount += 1
+	get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)
