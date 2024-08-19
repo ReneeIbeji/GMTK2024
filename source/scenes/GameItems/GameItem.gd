@@ -3,11 +3,16 @@ extends StaticBody2D
 
 var gridRow : int
 var gridColumn : int
+
+var currentlyUpgraded : bool = false
 @export var maxHealth : int
 @export var health : int
 @export var attackCooldown : int
 @export var attackStrength : int
 @export var attackDistance : int
+
+@export var upgradeSize : int
+
 
 signal gameItemDestroyed()
 
@@ -23,3 +28,8 @@ func destroyed() -> void:
     queue_free()
 
     
+func upgrade() -> void:
+    pass
+
+func degrade() -> void:
+    pass

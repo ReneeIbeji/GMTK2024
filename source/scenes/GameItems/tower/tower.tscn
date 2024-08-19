@@ -15,6 +15,7 @@ maxHealth = 3
 attackCooldown = 2
 attackStrength = 2
 attackDistance = 500
+upgradeSize = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.477675, 0.405349, 0.279738, 1)
