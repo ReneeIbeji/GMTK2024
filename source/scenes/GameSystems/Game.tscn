@@ -1,13 +1,35 @@
-[gd_scene load_steps=11 format=3 uid="uid://6jsylcsnrfd3"]
+[gd_scene load_steps=15 format=3 uid="uid://6jsylcsnrfd3"]
 
 [ext_resource type="Script" path="res://scenes/GameSystems/game.gd" id="1_hq07i"]
 [ext_resource type="PackedScene" uid="uid://bh2ag2wclw6d3" path="res://scenes/GameSystems/Grid/baseGrid.tscn" id="1_xekyy"]
 [ext_resource type="Resource" uid="uid://dm06nnyg7btjb" path="res://scenes/GameItems/tower/tower.tres" id="2_05a0s"]
+[ext_resource type="Script" path="res://scenes/GameSystems/waveStateResource.gd" id="2_brthk"]
 [ext_resource type="PackedScene" uid="uid://b7kexp01iv2h7" path="res://scenes/Enemies/Enemy.tscn" id="2_e1iwy"]
 [ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="3_a74vq"]
 [ext_resource type="PackedScene" uid="uid://cawt67enk7m2q" path="res://scenes/GameSystems/main_camera.tscn" id="3_gbh75"]
 [ext_resource type="Resource" uid="uid://dnjuk0rta3l5f" path="res://scenes/GameItems/ship/MainShip.tres" id="5_grmce"]
 [ext_resource type="Texture2D" uid="uid://cygecaoaupx8s" path="res://assets/SpaceBackground.png" id="5_wkr63"]
+
+[sub_resource type="Resource" id="Resource_fv8j4"]
+script = ExtResource("2_brthk")
+timePassed = 0
+timeBetweenWaves = 10
+minEnemysInRound = 1
+maxEnemysInRound = 1
+
+[sub_resource type="Resource" id="Resource_ynnpb"]
+script = ExtResource("2_brthk")
+timePassed = 20
+timeBetweenWaves = 10
+minEnemysInRound = 1
+maxEnemysInRound = 3
+
+[sub_resource type="Resource" id="Resource_xnym2"]
+script = ExtResource("2_brthk")
+timePassed = 40
+timeBetweenWaves = 10
+minEnemysInRound = 2
+maxEnemysInRound = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_mt5qt"]
 font_size = 86
@@ -20,10 +42,12 @@ point_count = 12
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_hq07i")
+waveStates = Array[ExtResource("2_brthk")]([SubResource("Resource_fv8j4"), SubResource("Resource_ynnpb"), SubResource("Resource_xnym2")])
 EnemyScene = ExtResource("2_e1iwy")
 upgradeMouseIcon = ExtResource("3_a74vq")
-maxShipHealth = 1
-numberOfSecondsPerPoint = 2
+maxShipHealth = 3
+startPointsNumber = 30
+numberOfSecondsPerPoint = 1
 testPlaceableItem = ExtResource("2_05a0s")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]

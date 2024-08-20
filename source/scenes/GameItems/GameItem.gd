@@ -33,3 +33,6 @@ func upgrade() -> void:
 
 func degrade() -> void:
     pass
+
+func gameOver() -> void:
+    queue_free()

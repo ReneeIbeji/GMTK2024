@@ -25,7 +25,6 @@ func _process(delta: float) -> void:
 	look_at(targetLocation)
 
 func continueMoving(row : int, column : int) -> void:
-	print("continue moving")
 	if gameItemToAttackQueue.is_empty():
 		stopped = false
 		gameItemToAttack = null
@@ -41,7 +40,6 @@ func continueMoving(row : int, column : int) -> void:
 
 func _on_body_entered(body:Node2D) -> void:
 	
-	print("area entered")
 	if body.is_in_group("ship"):
 		hitShip.emit(self)
 		queue_free()

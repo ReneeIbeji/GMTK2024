@@ -9,6 +9,7 @@ enum mouseState {None, Item, PowerUp}
 signal gameover()
 var  gameRunning : bool
 
+@export var waveStates : Array[WaveState]
 @export var EnemyScene : PackedScene
 @export var upgradeMouseIcon : CompressedTexture2D
 
@@ -16,8 +17,10 @@ var shipHealth : int
 var pointCount : int
 
 @export var maxShipHealth : int
+@export var startPointsNumber : int
 @export var numberOfSecondsPerPoint : int 
 
+var currentTimeBetweenWaves : int
 
 var currentHandState : mouseState
  
@@ -30,6 +33,8 @@ var enemysInPlay : Array[Enemy]
 
 var mouseOnCell : bool
 var cellMouseOn : Vector2
+var gameRunTimer : float
+
 
 @export var testPlaceableItem : placeableItem
 # Called when the node enters the scene tree for the first time.
@@ -37,7 +42,7 @@ func _ready() -> void:
 	gameRunning = true
 	gameover.connect(whenGameOver)
 	shipHealth = maxShipHealth
-	pointCount = 10
+	pointCount = startPointsNumber
 	currentHandState = mouseState.None
 
 	get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)
@@ -46,17 +51,17 @@ func _ready() -> void:
 
 	itemInHandSprite = TextureRect.new()
 	$UI.add_child(itemInHandSprite)
-	spawn_enemy()
-
+	spawn_enemy_wave()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	gameRunTimer += delta
 	$UI/Health.text = "Health: " + str(shipHealth)
 	$UI/Points.text = "Points: " + str(pointCount)
+
 	if currentHandState != mouseState.None:
 		itemInHandSprite.position = get_viewport().get_mouse_position() + Vector2(20,20)
 	if gameRunning:
-
 		if mouseOnCell:	
 			if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && currentHandState == mouseState.Item:
 				var result : bool = GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, currentPlacingItem)
@@ -74,6 +79,18 @@ func whenGameOver() -> void:
 		enemy.queue_free()
 
 
+	enemysInPlay.clear()
+
+func getCurrentWaveState() -> WaveState:
+	var lastWaveState = waveStates[0]
+
+	for i in range(1,waveStates.size()):
+		if waveStates[i].timePassed > gameRunTimer:
+			return lastWaveState
+		lastWaveState = waveStates[i]
+	
+	return lastWaveState
+
 func spawn_enemy() -> void:
 	$EnemySpawnPoints/SpawnPoint.progress_ratio = randf()
 	var enemySpawnPoint : Vector2 = $EnemySpawnPoints/SpawnPoint.position
@@ -84,10 +101,19 @@ func spawn_enemy() -> void:
 	tempEnemyNode.health = tempEnemyNode.maxHealth
 	tempEnemyNode.enemyDied.connect(remove_enemy)
 	tempEnemyNode.hitShip.connect(shipHit)
+	var callable : Callable = Callable(tempEnemyNode, "gameOver")
+	gameover.connect(callable)
 
 	add_child(tempEnemyNode)
 	enemysInPlay.append(tempEnemyNode)
 
+func spawn_enemy_wave() -> void:
+	if gameRunning:
+		var enemyNum = randi_range(getCurrentWaveState().minEnemysInRound,getCurrentWaveState().maxEnemysInRound)
+		for i in range(enemyNum):
+			spawn_enemy()
+		get_tree().create_timer(getCurrentWaveState().timeBetweenWaves).timeout.connect(spawn_enemy_wave)
+	
 
 func shipHit(enemy : Enemy) -> void:
 	shipHealth -= 1
@@ -153,3 +179,4 @@ func accumulatePoints() -> void:
 	if gameRunning:
 		pointCount += 1
 		get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)
+

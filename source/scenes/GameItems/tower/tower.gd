@@ -13,6 +13,8 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 
+
+
 	if !currentAttackTargets.is_empty():
 		timeLeftToAttack -= delta
 		if timeLeftToAttack <= 0:
@@ -23,12 +25,16 @@ func _process(delta: float) -> void:
 		if position.distance_to(enemy.position) < attackDistance:
 			if currentAttackTargets.is_empty():
 				timeLeftToAttack = 0
-			if !currentAttackTargets.has(enemy):
+			if enemy not in currentAttackTargets:
+				print("new enemy in range")
 				currentAttackTargets.append(enemy)
 				enemy.enemyDied.connect(removeDeadEnemyFromTargets)
 				enemy.hitShip.connect(removeDeadEnemyFromTargets)
 		else:
-			currentAttackTargets.erase(enemy)
+			if currentAttackTargets.has(enemy):
+				currentAttackTargets.erase(enemy)
+				enemy.enemyDied.disconnect(removeDeadEnemyFromTargets)
+				enemy.hitShip.disconnect(removeDeadEnemyFromTargets)
 
 
 func doAttack() -> void:
@@ -36,8 +42,14 @@ func doAttack() -> void:
 	var projectileNode : Node2D = projectileScene.instantiate()
 	projectileNode.position = position
 	projectileNode.targetEnemy = attackTarget
-	projectileNode.attackStrength = attackStrength
+	if currentlyUpgraded:
+		projectileNode.attackStrength = attackStrength * 3
+	else:
+		projectileNode.attackStrength = attackStrength
 	add_sibling(projectileNode)
+
+func upgrade() -> void:
+	health = maxHealth 
 
 func removeDeadEnemyFromTargets(enemy : Enemy) -> void:
 	currentAttackTargets.erase(enemy)
