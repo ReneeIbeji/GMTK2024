@@ -92,29 +92,91 @@ func powerup_item_on_grid(row : int, column : int) -> bool:
 
 func powerdown_item_on_grid(row : int, column : int) -> void:
 	var gameItem : GameItem = get_item_on_grid(row, column)
+	if gameItem == null:
+		return
+	if gameItem.is_queued_for_deletion():
+		return
 	gameItem.degrade()
 	gameItem.currentlyUpgraded = false
 	set_scale_of_item(row, column, 1)
 
 func set_scale_of_item(row : int, column : int, itemScale : int) -> bool:
 	var gameItem : GameItem = get_item_on_grid(row, column)
+	var scaleCorner : Vector2 = get_valid_scale_pos(row, column, itemScale)
 
-	if (row + itemScale - 1 >= gridRowsCount) || (column + itemScale - 1 >= gridColumnsCount):
+	if itemScale == 1:
+		gameItem.position = get_cell_position(row,column)
+		gameItem.scale = Vector2(1,1)
+		for y in range(0, gridColumnsCount):
+			for x in range(0, gridRowsCount):
+				print(Vector2(y,x))
+				if x == gameItem.gridColumn && y == gameItem.gridRow:
+					continue
+				if get_item_on_grid(y,x):
+					continue
+				gridCellsContents[y][x] = null
+		return true
+		
+
+	if scaleCorner == Vector2(-1, -1):
 		return false
+	
+	print(scaleCorner)
+	for y in range(scaleCorner.y, scaleCorner.y + itemScale):
+		for x in range(scaleCorner.x, scaleCorner.x + itemScale):
+			print(Vector2(x,y))
+			gridCellsContents[x][y] = gameItem
 
-	for x in range(column, column + itemScale):
-		for y in range(row, row + itemScale): 
-			if x == column && y == row:
-				continue
-
-			if get_item_on_grid(y,x) != null:
-				return false
-
+	gameItem.position = get_cell_position(scaleCorner.x,scaleCorner.y)
 	gameItem.scale = Vector2(itemScale,itemScale)
 	gameItem.position += Vector2(125 * (itemScale - 2) + 62.5, 125 * (itemScale - 2) + 62.5)
 
 	return true
 
+func get_valid_scale_pos(row : int, column : int, itemScale : int) -> Vector2:
+
+	var gameItem : GameItem = get_item_on_grid(row, column)
+
+	# middle check
+	if check_scale_pos(row,column,itemScale,gameItem):
+		return Vector2(row,column)
+	# top left
+	if check_scale_pos(row - itemScale + 1,column - itemScale + 1,itemScale,gameItem):
+		return Vector2(row - itemScale + 1,column - itemScale + 1)
+
+	# top middle
+	if check_scale_pos(row - itemScale + 1,column,itemScale,gameItem):
+		return Vector2(row - itemScale + 1,column)
+
+	# middle left 
+	if check_scale_pos(row,column - itemScale + 1,itemScale,gameItem):
+		return Vector2(row,column - itemScale + 1)
+
+	
+	return Vector2(-1,-1)
+
+
+func check_scale_pos(row : int, column : int, itemScale : int, gameItem : GameItem) -> bool:
+
+
+	if row < 0 || column < 0:
+		return false
+
+	print(column + itemScale - 1)
+	print(gridColumnsCount)
+	if (row + itemScale - 1 >= gridRowsCount) || (column + itemScale - 1 >= gridColumnsCount) :
+		return false
+	
+
+	for x in range(column, column + itemScale):
+		for y in range(row, row + itemScale): 
+			if x == gameItem.gridColumn && y == gameItem.gridRow:
+				continue
+
+			if get_item_on_grid(y,x) != null:
+				return false
+	
+	return true
 
 
 func get_item_on_grid(row : int, column : int) -> GameItem:

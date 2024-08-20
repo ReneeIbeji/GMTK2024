@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bx8rjpxu7xdwv"]
 
 [ext_resource type="Script" path="res://scenes/GameItems/tower/tower.gd" id="1_3hf3b"]
-[ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="1_u7ypk"]
 [ext_resource type="PackedScene" uid="uid://buuaupvq0is7h" path="res://scenes/GameItems/tower/towerProjectile.tscn" id="2_qrbf4"]
+[ext_resource type="Texture2D" uid="uid://c6jnygh3r3qr0" path="res://scenes/GameItems/tower/SpacestationTower.png" id="4_sb61y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3u07l"]
 size = Vector2(129, 131)
@@ -18,8 +18,9 @@ attackDistance = 500
 upgradeSize = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.477675, 0.405349, 0.279738, 1)
-texture = ExtResource("1_u7ypk")
+position = Vector2(0, -1.90735e-06)
+scale = Vector2(0.111857, 0.111856)
+texture = ExtResource("4_sb61y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 1)

@@ -1,16 +1,56 @@
-[gd_scene load_steps=11 format=3 uid="uid://6jsylcsnrfd3"]
+[gd_scene load_steps=23 format=3 uid="uid://6jsylcsnrfd3"]
 
 [ext_resource type="Script" path="res://scenes/GameSystems/game.gd" id="1_hq07i"]
 [ext_resource type="PackedScene" uid="uid://bh2ag2wclw6d3" path="res://scenes/GameSystems/Grid/baseGrid.tscn" id="1_xekyy"]
+[ext_resource type="Script" path="res://scenes/GameSystems/waveStateResource.gd" id="2_0timj"]
 [ext_resource type="Resource" uid="uid://dm06nnyg7btjb" path="res://scenes/GameItems/tower/tower.tres" id="2_05a0s"]
 [ext_resource type="PackedScene" uid="uid://b7kexp01iv2h7" path="res://scenes/Enemies/Enemy.tscn" id="2_e1iwy"]
-[ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="3_a74vq"]
 [ext_resource type="PackedScene" uid="uid://cawt67enk7m2q" path="res://scenes/GameSystems/main_camera.tscn" id="3_gbh75"]
+[ext_resource type="Texture2D" uid="uid://dov73yva4t8kp" path="res://scenes/Astroid_Debris.png" id="4_g1ul1"]
 [ext_resource type="Resource" uid="uid://dnjuk0rta3l5f" path="res://scenes/GameItems/ship/MainShip.tres" id="5_grmce"]
 [ext_resource type="Texture2D" uid="uid://cygecaoaupx8s" path="res://assets/SpaceBackground.png" id="5_wkr63"]
+[ext_resource type="Texture2D" uid="uid://cdghooefmmbpo" path="res://assets/GameOver_Screen.png" id="9_d38oo"]
+[ext_resource type="Texture2D" uid="uid://y0o5t6dogps0" path="res://assets/Start_Button.png" id="10_y8run"]
+[ext_resource type="Script" path="res://scenes/GameSystems/restart_button.gd" id="11_cesf8"]
+[ext_resource type="Texture2D" uid="uid://cfuk56ptggl03" path="res://assets/Quit_Button.png" id="12_gmonj"]
+[ext_resource type="Script" path="res://scenes/GameSystems/menu_button.gd" id="12_k3413"]
+[ext_resource type="AudioStream" uid="uid://desh11ssjarau" path="res://scenes/GameItems/tower/Eighties Action.mp3" id="15_5c1ym"]
+
+[sub_resource type="Resource" id="Resource_3ty4m"]
+script = ExtResource("2_0timj")
+timePassed = 0
+timeBetweenWaves = 10
+minEnemysInRound = 1
+maxEnemysInRound = 1
+
+[sub_resource type="Resource" id="Resource_h3rgd"]
+script = ExtResource("2_0timj")
+timePassed = 40
+timeBetweenWaves = 10
+minEnemysInRound = 2
+maxEnemysInRound = 3
+
+[sub_resource type="Resource" id="Resource_712or"]
+script = ExtResource("2_0timj")
+timePassed = 60
+timeBetweenWaves = 6
+minEnemysInRound = 2
+maxEnemysInRound = 3
+
+[sub_resource type="Resource" id="Resource_hclsf"]
+script = ExtResource("2_0timj")
+timePassed = 90
+timeBetweenWaves = 10
+minEnemysInRound = 4
+maxEnemysInRound = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_mt5qt"]
 font_size = 86
+font_color = Color(0.568973, 0.568973, 0.568973, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o11an"]
+font_size = 101
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_fhnao"]
 _data = {
@@ -19,11 +59,14 @@ _data = {
 point_count = 12
 
 [node name="Game" type="Node2D"]
+position = Vector2(-27, -67)
 script = ExtResource("1_hq07i")
+waveStates = Array[ExtResource("2_0timj")]([SubResource("Resource_3ty4m"), SubResource("Resource_h3rgd"), SubResource("Resource_712or"), SubResource("Resource_hclsf")])
 EnemyScene = ExtResource("2_e1iwy")
-upgradeMouseIcon = ExtResource("3_a74vq")
-maxShipHealth = 1
-numberOfSecondsPerPoint = 2
+upgradeMouseIcon = ExtResource("4_g1ul1")
+maxShipHealth = 3
+startPointsNumber = 30
+numberOfSecondsPerPoint = 1
 testPlaceableItem = ExtResource("2_05a0s")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
@@ -50,19 +93,19 @@ shipColumn = 2
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Button" type="Button" parent="UI"]
-offset_left = 1628.0
-offset_top = 829.0
-offset_right = 1708.0
-offset_bottom = 909.0
+offset_left = 1539.0
+offset_top = 624.0
+offset_right = 1723.0
+offset_bottom = 704.0
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = "Place tower (10 points)"
 
 [node name="Button2" type="Button" parent="UI"]
-offset_left = 1628.0
-offset_top = 922.0
-offset_right = 1752.0
-offset_bottom = 1002.0
+offset_left = 1539.0
+offset_top = 717.0
+offset_right = 1739.0
+offset_bottom = 797.0
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = "Upgrade tower (6 points)
@@ -77,6 +120,15 @@ text = "Points: 10
 "
 label_settings = SubResource("LabelSettings_mt5qt")
 
+[node name="score" type="Label" parent="UI"]
+offset_left = 109.0
+offset_top = 80.0
+offset_right = 513.0
+offset_bottom = 198.0
+text = "Score: 10
+"
+label_settings = SubResource("LabelSettings_mt5qt")
+
 [node name="Health" type="Label" parent="UI"]
 offset_left = 1295.0
 offset_top = 183.0
@@ -86,6 +138,41 @@ text = "Health: 3
 "
 label_settings = SubResource("LabelSettings_mt5qt")
 
+[node name="EndMenu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="EndMenu"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("9_d38oo")
+
+[node name="RestartButton" type="TextureButton" parent="EndMenu"]
+offset_left = 707.0
+offset_top = 609.0
+offset_right = 1909.0
+offset_bottom = 1039.0
+scale = Vector2(0.365, 0.365)
+texture_normal = ExtResource("10_y8run")
+script = ExtResource("11_cesf8")
+
+[node name="MenuButton" type="TextureButton" parent="EndMenu"]
+offset_left = 707.0
+offset_top = 823.0
+offset_right = 1912.0
+offset_bottom = 1253.0
+scale = Vector2(0.365, 0.365)
+texture_normal = ExtResource("12_gmonj")
+script = ExtResource("12_k3413")
+
+[node name="Score" type="Label" parent="EndMenu"]
+offset_left = 767.0
+offset_top = 355.0
+offset_right = 1182.0
+offset_bottom = 596.0
+text = "100"
+label_settings = SubResource("LabelSettings_o11an")
+vertical_alignment = 1
+
 [node name="EnemySpawnPoints" type="Path2D" parent="."]
 curve = SubResource("Curve2D_fhnao")
 
@@ -93,5 +180,13 @@ curve = SubResource("Curve2D_fhnao")
 position = Vector2(1159, -1106)
 rotation = 0.0333864
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_5c1ym")
+autoplay = true
+max_distance = 9.22337e+18
+attenuation = 1e-05
+
 [connection signal="pressed" from="UI/Button" to="." method="_on_towerTest_button_pressed"]
 [connection signal="pressed" from="UI/Button2" to="." method="_on_upgradeTest_button_test"]
+[connection signal="pressed" from="EndMenu/RestartButton" to="EndMenu/RestartButton" method="_on_pressed"]
+[connection signal="pressed" from="EndMenu/MenuButton" to="EndMenu/MenuButton" method="_on_pressed"]
