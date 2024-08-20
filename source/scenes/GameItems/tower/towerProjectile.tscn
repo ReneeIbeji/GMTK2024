@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://buuaupvq0is7h"]
 
 [ext_resource type="Script" path="res://scenes/GameItems/tower/tower_projectile.gd" id="1_khyfl"]
-[ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="1_m4gcy"]
+[ext_resource type="Texture2D" uid="uid://comd5wwh4ia2j" path="res://scenes/GameItems/tower/Astroid_Debris.png" id="2_mlt64"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_812wq"]
 size = Vector2(39, 39)
@@ -11,9 +11,9 @@ script = ExtResource("1_khyfl")
 speed = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-3.8147e-06, -3.8147e-06)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("1_m4gcy")
+position = Vector2(1, -2)
+scale = Vector2(0.048029, 0.048029)
+texture = ExtResource("2_mlt64")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -0.5)

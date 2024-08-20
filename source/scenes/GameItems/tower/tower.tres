@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="placeableItem" load_steps=4 format=3 uid="uid://dm06nnyg7btjb"]
 
 [ext_resource type="Script" path="res://scenes/GameItems/placeable_items_resouce.gd" id="1_3f6an"]
-[ext_resource type="Texture2D" uid="uid://bvjhmfndnxypv" path="res://icon.svg" id="1_yqx2b"]
+[ext_resource type="Texture2D" uid="uid://c6jnygh3r3qr0" path="res://scenes/GameItems/tower/SpacestationTower.png" id="1_7awcf"]
 [ext_resource type="PackedScene" uid="uid://bx8rjpxu7xdwv" path="res://scenes/GameItems/tower/tower.tscn" id="2_6dhvf"]
 
 [resource]
 script = ExtResource("1_3f6an")
 name = "Tower"
 scene = ExtResource("2_6dhvf")
-icon = ExtResource("1_yqx2b")
+icon = ExtResource("1_7awcf")

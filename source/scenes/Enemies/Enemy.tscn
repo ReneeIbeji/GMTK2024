@@ -13,7 +13,6 @@ maxHealth = 5
 attackStrength = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.852763, 0.319698, 0.345033, 1)
 position = Vector2(-5, 0)
 rotation = -1.5708
 scale = Vector2(0.075, 0.075)

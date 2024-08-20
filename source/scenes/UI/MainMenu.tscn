@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://bui84fghoawin"]
+
+[ext_resource type="Texture2D" uid="uid://u3pd2dycyx3n" path="res://assets/Menu_Screen.png" id="1_onaiy"]
+[ext_resource type="Texture2D" uid="uid://y0o5t6dogps0" path="res://assets/Start_Button.png" id="2_ri32x"]
+[ext_resource type="Texture2D" uid="uid://cfuk56ptggl03" path="res://assets/Quit_Button.png" id="2_xilg4"]
+[ext_resource type="Script" path="res://scenes/UI/quit_button.gd" id="3_3xo21"]
+[ext_resource type="Script" path="res://scenes/UI/start_button.gd" id="3_4pm4y"]
+[ext_resource type="PackedScene" uid="uid://6jsylcsnrfd3" path="res://scenes/GameSystems/Game.tscn" id="4_hapo2"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="MainMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu"]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 1920.0
+offset_bottom = 1079.0
+texture = ExtResource("1_onaiy")
+
+[node name="QuitButton" type="TextureButton" parent="MainMenu"]
+offset_left = 1282.0
+offset_top = 768.0
+offset_right = 2484.0
+offset_bottom = 1198.0
+scale = Vector2(0.4, 0.4)
+texture_normal = ExtResource("2_xilg4")
+script = ExtResource("3_3xo21")
+
+[node name="StartButton" type="TextureButton" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1285.0
+offset_top = 528.0
+offset_right = 2487.0
+offset_bottom = 958.0
+scale = Vector2(0.4, 0.4)
+texture_normal = ExtResource("2_ri32x")
+script = ExtResource("3_4pm4y")
+gameScene = ExtResource("4_hapo2")
+
+[connection signal="pressed" from="MainMenu/QuitButton" to="MainMenu/QuitButton" method="_on_pressed"]
+[connection signal="pressed" from="MainMenu/StartButton" to="MainMenu/StartButton" method="_on_pressed"]
