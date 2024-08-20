@@ -74,7 +74,7 @@ scroll_scale = Vector2(0.5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
 texture_repeat = 1
-position = Vector2(965, 537)
+position = Vector2(913, 621)
 scale = Vector2(3.7676, 3.99463)
 texture = ExtResource("5_wkr63")
 flip_v = true

@@ -112,7 +112,7 @@ func set_scale_of_item(row : int, column : int, itemScale : int) -> bool:
 				print(Vector2(y,x))
 				if x == gameItem.gridColumn && y == gameItem.gridRow:
 					continue
-				if get_item_on_grid(y,x):
+				if get_item_on_grid(y,x) != gameItem:
 					continue
 				gridCellsContents[y][x] = null
 		return true
