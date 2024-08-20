@@ -1,14 +1,23 @@
 class_name Game
 extends Node2D
 
+
+
+
 enum mouseState {None, Item, PowerUp}
+
+signal gameover()
+var  gameRunning : bool
 
 @export var EnemyScene : PackedScene
 @export var upgradeMouseIcon : CompressedTexture2D
 
+var shipHealth : int
 var pointCount : int
 
+@export var maxShipHealth : int
 @export var numberOfSecondsPerPoint : int 
+
 
 var currentHandState : mouseState
  
@@ -25,6 +34,9 @@ var cellMouseOn : Vector2
 @export var testPlaceableItem : placeableItem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	gameRunning = true
+	gameover.connect(whenGameOver)
+	shipHealth = maxShipHealth
 	pointCount = 10
 	currentHandState = mouseState.None
 
@@ -39,22 +51,27 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	# print("mouse grid pos: ", cellMouseOn)
-	# Display item in hand
+	$UI/Health.text = "Health: " + str(shipHealth)
 	$UI/Points.text = "Points: " + str(pointCount)
-
 	if currentHandState != mouseState.None:
 		itemInHandSprite.position = get_viewport().get_mouse_position() + Vector2(20,20)
+	if gameRunning:
 
-	if mouseOnCell:	
-		if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && currentHandState == mouseState.Item:
-			var result : bool = GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, currentPlacingItem)
-			if result:
-				clear_placing_item()
-		if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && currentHandState == mouseState.PowerUp:
-			var result : bool = GlobalNodes.baseGridNode.powerup_item_on_grid(cellMouseOn.x, cellMouseOn.y)
-			if result:
-				deSet_mouse_upgrade()
+		if mouseOnCell:	
+			if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && currentHandState == mouseState.Item:
+				var result : bool = GlobalNodes.baseGridNode.place_item_on_grid(cellMouseOn.x, cellMouseOn.y, currentPlacingItem)
+				if result:
+					clear_placing_item()
+			if Input.is_action_just_pressed("ACTION_ClickOnGridCell") && currentHandState == mouseState.PowerUp:
+				var result : bool = GlobalNodes.baseGridNode.powerup_item_on_grid(cellMouseOn.x, cellMouseOn.y)
+				if result:
+					deSet_mouse_upgrade()
+
+func whenGameOver() -> void:
+	print("gameover")
+	gameRunning = false
+	for enemy in enemysInPlay:
+		enemy.queue_free()
 
 
 func spawn_enemy() -> void:
@@ -66,9 +83,17 @@ func spawn_enemy() -> void:
 	tempEnemyNode.targetLocation = GlobalNodes.baseGridNode.mainShipNode.global_position
 	tempEnemyNode.health = tempEnemyNode.maxHealth
 	tempEnemyNode.enemyDied.connect(remove_enemy)
+	tempEnemyNode.hitShip.connect(shipHit)
 
 	add_child(tempEnemyNode)
 	enemysInPlay.append(tempEnemyNode)
+
+
+func shipHit(enemy : Enemy) -> void:
+	shipHealth -= 1
+	remove_enemy(enemy)
+	if shipHealth <= 0:
+		gameover.emit()
 
 
 func remove_enemy(enemy : Enemy) -> void:
@@ -114,7 +139,6 @@ func _on_towerTest_button_pressed() -> void:
 	pointCount -= 10
 
 func _on_upgradeTest_button_test() -> void:
-
 	if currentHandState == mouseState.None:
 		if pointCount < 6:
 			return
@@ -126,5 +150,6 @@ func _on_upgradeTest_button_test() -> void:
 		deSet_mouse_upgrade()
 
 func accumulatePoints() -> void:
-	pointCount += 1
-	get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)
+	if gameRunning:
+		pointCount += 1
+		get_tree().create_timer(numberOfSecondsPerPoint).timeout.connect(accumulatePoints)

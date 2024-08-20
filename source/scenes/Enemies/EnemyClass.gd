@@ -1,6 +1,7 @@
 class_name Enemy
 extends Area2D
 
+signal hitShip(enemey : Enemy)
 signal enemyDied(enemy : Enemy)
 
 @export var speed : float 
