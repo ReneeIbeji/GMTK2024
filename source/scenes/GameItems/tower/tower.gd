@@ -26,6 +26,7 @@ func _process(delta: float) -> void:
 			if !currentAttackTargets.has(enemy):
 				currentAttackTargets.append(enemy)
 				enemy.enemyDied.connect(removeDeadEnemyFromTargets)
+				enemy.hitShip.connect(removeDeadEnemyFromTargets)
 		else:
 			currentAttackTargets.erase(enemy)
 

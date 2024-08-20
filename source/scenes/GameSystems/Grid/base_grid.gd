@@ -96,8 +96,11 @@ func powerdown_item_on_grid(row : int, column : int) -> void:
 	gameItem.currentlyUpgraded = false
 	set_scale_of_item(row, column, 1)
 
-func set_scale_of_item(row : int, column : int, itemScale) -> bool:
+func set_scale_of_item(row : int, column : int, itemScale : int) -> bool:
 	var gameItem : GameItem = get_item_on_grid(row, column)
+
+	if (row + itemScale - 1 >= gridRowsCount) || (column + itemScale - 1 >= gridColumnsCount):
+		return false
 
 	for x in range(column, column + itemScale):
 		for y in range(row, row + itemScale): 

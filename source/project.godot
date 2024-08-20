@@ -28,6 +28,8 @@ window/size/viewport_height=1080
 
 gridCell=""
 tower=""
+enemy=""
+ship=""
 
 [input]
 

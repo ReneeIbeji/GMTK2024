@@ -26,6 +26,7 @@ func _process(delta: float) -> void:
 
 		var mousePositionDelta : Vector2 = lastMousePosition - currentMousePosition
 		position += mousePositionDelta * cameraSpeed 
+		position = position.clamp(Vector2(-1681,-1041),Vector2(3601,2114))
 
 	elif cameraDragging && !Input.is_action_pressed("ACTION_DragCamera") || !mouseInWindow:
 		cameraDragging = false
@@ -49,7 +50,7 @@ func _input(event: InputEvent) -> void:
 func cameraZoomIn(value : float) -> void:
 	var mouse_pos : Vector2 = get_global_mouse_position()
 	zoom += Vector2(1,1) * zoomSpeed * value * zoom
-	zoom = zoom.clampf(0.25,3)
+	zoom = zoom.clampf(0.5,3)
 	var new_mouse_pos : Vector2 = get_global_mouse_position()
 	position += mouse_pos - new_mouse_pos
 

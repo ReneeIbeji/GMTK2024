@@ -21,6 +21,8 @@ func _process(delta: float) -> void:
 		if timeLeftToAttack <= 0:
 			gameItemToAttack.attack(attackStrength)
 			timeLeftToAttack = timeToAttack
+	
+	look_at(targetLocation)
 
 func continueMoving(row : int, column : int) -> void:
 	print("continue moving")
@@ -38,25 +40,28 @@ func continueMoving(row : int, column : int) -> void:
 
 
 func _on_body_entered(body:Node2D) -> void:
-	if !body.is_in_group("tower"):
-		return
 	
 	print("area entered")
-	var space_state := get_world_2d().direct_space_state
+	if body.is_in_group("ship"):
+		hitShip.emit(self)
+		queue_free()
 
-	var query := PhysicsRayQueryParameters2D.create(position, targetLocation, collision_mask, [self])
-	
-	var result := space_state.intersect_ray(query)
-	
-	if result:
-		if result.rid == body.get_rid():
-			if !stopped:
-				stopped = true
-				gameItemToAttack = body as GameItem
-				gameItemToAttack.gameItemDestroyed.connect(continueMoving)
-				timeLeftToAttack = 0
-				return 
-			
-			gameItemToAttackQueue.push_back(body as GameItem)
+	if body.is_in_group("tower"):
+		var space_state := get_world_2d().direct_space_state
+
+		var query := PhysicsRayQueryParameters2D.create(position, targetLocation, collision_mask, [self])
+		
+		var result := space_state.intersect_ray(query)
+		
+		if result:
+			if result.rid == body.get_rid():
+				if !stopped:
+					stopped = true
+					gameItemToAttack = body as GameItem
+					gameItemToAttack.gameItemDestroyed.connect(continueMoving)
+					timeLeftToAttack = 0
+					return 
+				
+				gameItemToAttackQueue.push_back(body as GameItem)
 			
 		
